@@ -1,20 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import StackNavigator from "./navigations/StackNavigator";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/lib/integration/react";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistStore(store)}>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+//https://www.figma.com/community/file/1209887316205488485/Travel-App
+
+//https://dribbble.com/shots/20508324-Ektiva-Travel-Mobile-App
