@@ -27,14 +27,15 @@ import { ROUTES } from "../../constants";
 
 const Home = () => {
   const { user } = useSelector(userState);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [category, setCategory] = useState("");
+  const [search, setSearch] = useState("");
   const { travels, status } = useSelector(travelState);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllTravelAdventure());
-  }, [dispatch]);
+    dispatch(getAllTravelAdventure({ title: search, category }));
+  }, [dispatch, search, category]);
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -49,7 +50,7 @@ const Home = () => {
       <ScrollView>
         <Header />
         <View className="mt-4 px-4">
-          <Searchbar />
+          <Searchbar setSearch={setSearch} search={search} />
         </View>
 
         <View className="px-4 my-8">
@@ -86,6 +87,10 @@ const Home = () => {
               <View className="mt-32">
                 <Loading />
               </View>
+            ) : status === STATUSES.ERROR ? (
+              <View className="mt-32">
+                <Error />
+              </View>
             ) : travels?.length > 0 ? (
               travels &&
               travels?.map((item, index) => {
@@ -102,12 +107,6 @@ const Home = () => {
             ) : (
               <View className="mt-32">
                 <NotFound />
-              </View>
-            )}
-
-            {status === STATUSES.ERROR && (
-              <View className="mt-32">
-                <Error />
               </View>
             )}
           </View>

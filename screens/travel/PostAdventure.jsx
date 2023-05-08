@@ -14,6 +14,10 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { Button } from "../../components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { postTravelAdventure } from "../../redux/actions/travelAction";
+import { STATUSES } from "../../redux/slices/userSlice";
+import { travelState } from "../../redux/slices/travelSlice";
+import { ROUTES } from "../../constants";
 
 const data = [
   { key: 1, value: "Temple" },
@@ -29,6 +33,7 @@ const data = [
 
 const PostAdventure = ({ navigation, route }) => {
   const dispatch = useDispatch();
+  const { status } = useSelector(travelState);
   const [selected, setSelected] = useState("");
   const [image, setImage] = useState("");
   const [rating, setRating] = useState(0);
@@ -56,6 +61,7 @@ const PostAdventure = ({ navigation, route }) => {
       const response = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
+      
       });
 
       if (!response.canceled) {
@@ -68,9 +74,10 @@ const PostAdventure = ({ navigation, route }) => {
     const { title, description, price, loaction } = formData;
     const travelData = new FormData();
     travelData.append("image", {
-      name: new Date() + "_profile",
+      name: new Date() + "image",
       uri: image,
       type: "image/jpg",
+      
     });
     travelData.append("title", title);
     travelData.append("description", description);
@@ -79,10 +86,14 @@ const PostAdventure = ({ navigation, route }) => {
     travelData.append("category", selected);
     travelData.append("rating", rating);
 
-    // if (status === STATUSES.IDLE) {
-    //   setImage("");
-    // }
+    dispatch(postTravelAdventure(travelData));
+
+    if(status === STATUSES.IDLE) {
+      navigation.goBack()
+    }    
   };
+
+
 
   return (
     <ScrollView>
@@ -128,7 +139,7 @@ const PostAdventure = ({ navigation, route }) => {
           />
 
           <SelectList
-            setSelected={(val) => setSelected(val)} 
+            setSelected={(val) => setSelected(val)}
             data={data}
             save="value"
             placeholder="Select Traveling Category"

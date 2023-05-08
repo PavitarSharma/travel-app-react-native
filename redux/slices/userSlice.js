@@ -77,6 +77,7 @@ export const userSlice = createSlice({
       .addCase(updateAvatar.rejected, (state) => {
         state.status = STATUSES.ERROR
       })
+      
   },
 });
 

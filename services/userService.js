@@ -8,18 +8,17 @@ const signUp = async (body) => {
 
 const signIn = async (body) => {
   const { data } = await http.post("/user/signIn", body);
-  console.log(data);
   return data;
 };
 
-const getUser = async (userId, token) => {
+const getUser = async (id, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-  const { data } = await http.get(`/user/${userId}`, config);
+  const { data } = await http.get(`/user/${id}`, config);
 
   return data;
 };

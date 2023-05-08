@@ -4,7 +4,7 @@ import React from "react";
 const Error = () => {
   return (
     <View>
-      <Text className="text-red-500 text-xl text-center">Oops! Something went wrong. Try Again</Text>
+      <Text className="text-red-500 text-center">Oops! Something went wrong. Try Again</Text>
     </View>
   );
 };

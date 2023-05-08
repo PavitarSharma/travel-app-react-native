@@ -35,12 +35,12 @@ export const signIn = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
   "user/getUser",
-  async (userId, thunkAPI) => {
+  async (id, thunkAPI) => {
   
     try {
       const token = thunkAPI.getState().user.token;
 
-      return await userService.getUser(userId, token);
+      return await userService.getUser(id, token);
     } catch (error) {
       console.log(error.response.data);
 

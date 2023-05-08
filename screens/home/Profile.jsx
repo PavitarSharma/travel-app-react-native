@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
+  FlatList,
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { ROUTES } from "../../constants";
@@ -14,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, userState } from "../../redux/slices/userSlice";
 import { useEffect } from "react";
 import { getUser } from "../../redux/actions/userAction";
+import { getUserAdventureTrip } from "../../redux/actions/travelAction";
+import { travelState } from "../../redux/slices/travelSlice";
 
 const str =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, magnam itaque? Rerum inventore voluptatum corporis iste, placea quia nostrum deserunt ";
@@ -21,6 +24,7 @@ const Profile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { user } = useSelector(userState);
+  const { travels } = useSelector(travelState);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -29,7 +33,11 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(getUser(user?._id));
-  }, [dispatch, user?.id]);
+  }, [dispatch, user?._id]);
+
+  useEffect(() => {
+    dispatch(getUserAdventureTrip());
+  }, [dispatch]);
 
   return (
     <ScrollView>
@@ -105,6 +113,25 @@ const Profile = () => {
 
         <View className="mt-12">
           <Text className="text-2xl font-bold">My trips</Text>
+        </View>
+
+        <View className="mx-2">
+          <FlatList
+            data={travels}
+            numColumns={2}
+            renderItem={({ item }) => {
+              return (
+                <View className="h-[150px] w-[150px] space-x-2 mr-3 my-3 relative">
+                  <Image
+                    source={{ uri: item?.image }}
+                    className="h-full w-full object-cover rounded-2xl"
+                  />
+                  <Text className="absolute bottom-0 text-md font-bold text-white text-left w-full pr-3 pb-3">{item?.title}</Text>
+                </View>
+              );
+            }}
+            keyExtractor={(item) => item?._id}
+          />
         </View>
       </SafeAreaView>
     </ScrollView>
