@@ -31,8 +31,6 @@ const Profile = () => {
     dispatch(getUser(user?._id));
   }, [dispatch, user?.id]);
 
- 
-
   return (
     <ScrollView>
       <SafeAreaView className="mt-8 px-4">
@@ -56,7 +54,9 @@ const Profile = () => {
           <View className="w-[80px] h-[80px] rounded-full bg-gray-300">
             <Image
               source={{
-                uri: user ? user?.avatar : "https://res.cloudinary.com/pavitarsharma/image/upload/v1683457291/dm5pkbvd9q10mwqxrbdp.png",
+                uri: user
+                  ? user?.avatar
+                  : "https://res.cloudinary.com/pavitarsharma/image/upload/v1683457291/dm5pkbvd9q10mwqxrbdp.png",
               }}
               className="w-full h-full rounded-full object-cover"
             />
@@ -64,7 +64,9 @@ const Profile = () => {
           <View>
             <Text className="font-bold text-2xl">{user?.name}</Text>
             <Text className="text-gray-500 leading-4 text-start w-[240px]">
-              {user?.description && user?.description.length > 50 && user?.description.substring(0, 60) + "...."}
+              {user?.description &&
+                user?.description.length > 50 &&
+                user?.description.substring(0, 60) + "...."}
             </Text>
           </View>
         </View>
@@ -77,14 +79,28 @@ const Profile = () => {
             </Text>
           </View>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate(ROUTES.USERINFO, {user: user})}
-            className="bg-blue-500 w-28 h-[40px] rounded-full items-center justify-center mt-4"
-          >
-            <Text className="text-center text-white text-[14px] font-bold">
-              View more
-            </Text>
-          </TouchableOpacity>
+          <View className="flex-row items-center justify-between">
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(ROUTES.USERINFO, { user: user })
+              }
+              className="bg-blue-500 w-28 h-[40px] rounded-full items-center justify-center mt-4"
+            >
+              <Text className="text-center text-white text-[14px] font-bold">
+                View more
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(ROUTES.UPLOADADVENTURE, { user: user })
+              }
+              className="bg-gray-400 w-28 h-[40px] rounded-full items-center justify-center mt-4"
+            >
+              <Text className="text-center text-white text-[14px] font-bold">
+                Post
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View className="mt-12">

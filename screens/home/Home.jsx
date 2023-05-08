@@ -5,25 +5,40 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  LogBox,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Header, Searchbar } from "../../components";
-import { travels } from "../../utils/data";
-import { userState } from "../../redux/slices/userSlice";
+import {
+  Error,
+  Header,
+  Loading,
+  NotFound,
+  Searchbar,
+  TravelCard,
+} from "../../components";
+import { travelsData } from "../../utils/data";
+import { STATUSES, userState } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { travelState } from "../../redux/slices/travelSlice";
 import { getAllTravelAdventure } from "../../redux/actions/travelAction";
+import { useNavigation } from "@react-navigation/native";
+import { ROUTES } from "../../constants";
 
 const Home = () => {
   const { user } = useSelector(userState);
+  const navigation = useNavigation()
   const [category, setCategory] = useState("");
-  const { travel, status } = useSelector(travelState);
+  const { travels, status } = useSelector(travelState);
   const dispatch = useDispatch();
-console.log(travel);
+
   useEffect(() => {
     dispatch(getAllTravelAdventure());
   }, [dispatch]);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  }, []);
 
   const handleSelectCategory = (value) => {
     setCategory(value);
@@ -43,10 +58,11 @@ console.log(travel);
               horizontal
               legacyImplementation={false}
               showsHorizontalScrollIndicator={false}
-              data={travels}
+              data={travelsData}
               renderItem={({ item }) => {
                 return (
                   <TouchableOpacity
+                    key={item.id}
                     className={`w-[70px] h-[70px] rounded-full ${
                       category === item.title ? "bg-orange-100" : "bg-white"
                     } items-center justify-center mr-3`}
@@ -63,6 +79,39 @@ console.log(travel);
             />
           }
         </View>
+
+        <ScrollView>
+          <View className="px-4 mb-4">
+            {status === STATUSES.LOADING ? (
+              <View className="mt-32">
+                <Loading />
+              </View>
+            ) : travels?.length > 0 ? (
+              travels &&
+              travels?.map((item, index) => {
+                return (
+                  <TravelCard
+                    onPressNavigation={() =>
+                      navigation.navigate(ROUTES.TRAVELDETAIL, { item: item })
+                    }
+                    key={item?._id}
+                    item={item}
+                  />
+                );
+              })
+            ) : (
+              <View className="mt-32">
+                <NotFound />
+              </View>
+            )}
+
+            {status === STATUSES.ERROR && (
+              <View className="mt-32">
+                <Error />
+              </View>
+            )}
+          </View>
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );

@@ -16,4 +16,7 @@ export default {
 
   USERINFO: "UserInfo",
   EDITPROFILE: "Edit Profile",
+
+  TRAVELDETAIL: "TravelDetail",
+  UPLOADADVENTURE: "Upload Adventure",
 };

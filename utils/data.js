@@ -72,7 +72,7 @@ export const sidebarData = [
   },
 ];
 
-export const travels = [
+export const travelsData = [
   {
     id: 1,
     title: "temple",
@@ -123,7 +123,7 @@ export const travels = [
 
   {
     id: 9,
-    title: "temple",
+    title: "beach",
     image: beach,
   },
 ];
