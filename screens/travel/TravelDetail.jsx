@@ -31,7 +31,7 @@ const TravelDetail = ({ navigation, route }) => {
     }
   };
   return (
-    <SafeAreaView className="mt-4 px-4 mb-10">
+    <SafeAreaView className="mt-8 px-4 mb-10">
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View className="flex-row items-center justify-between">
           <Ionicons

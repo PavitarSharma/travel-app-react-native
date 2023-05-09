@@ -57,7 +57,7 @@ const Home = () => {
   }, [dispatch, search, category, setCategory]);
 
   return (
-    <SafeAreaView className="mt-2">
+    <SafeAreaView className="mt-6">
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={

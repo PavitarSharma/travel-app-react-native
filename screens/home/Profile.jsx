@@ -52,7 +52,7 @@ const Profile = () => {
   }, [dispatch,user?._id]);
 
   return (
-    <SafeAreaView className="mt-4 px-4">
+    <SafeAreaView className="mt-8 px-4">
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={

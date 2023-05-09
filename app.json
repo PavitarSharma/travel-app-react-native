@@ -4,10 +4,10 @@
     "slug": "travel-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/adventurer.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/adventurer.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
