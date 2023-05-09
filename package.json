@@ -23,6 +23,7 @@
     "expo": "~48.0.15",
     "expo-image-picker": "^14.1.1",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "~0.16.4",
     "formik": "^2.2.9",
     "ignore-warnings": "^0.2.1",
     "moment": "^2.29.4",
