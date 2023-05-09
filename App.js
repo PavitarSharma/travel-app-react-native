@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/lib/integration/react";
+import "./utils/ignoreWarnings"
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 export default function App() {
   return (
@@ -16,6 +18,7 @@ export default function App() {
     </Provider>
   );
 }
+
 
 //https://www.figma.com/community/file/1209887316205488485/Travel-App
 

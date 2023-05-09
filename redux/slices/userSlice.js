@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUser, signIn, updateAvatar, updateUser } from "../actions/userAction";
+import {
+  getUser,
+  signIn,
+  signUp,
+  updateAvatar,
+  updateUser,
+} from "../actions/userAction";
 
 export const STATUSES = Object.freeze({
   IDLE: "idle",
@@ -32,6 +38,21 @@ export const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(signUp.pending, (state) => {
+        state.status = STATUSES.LOADING;
+      })
+      .addCase(signUp.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.status = STATUSES.IDLE;
+        state.message = action.payload?.message;
+      })
+
+      .addCase(signUp.rejected, (state, action) => {
+        state.user = null;
+        state.message = action.payload.message || "Sign up failed";
+        state.status = STATUSES.ERROR;
+      })
+
       .addCase(signIn.pending, (state) => {
         state.status = STATUSES.LOADING;
       })
@@ -55,29 +76,28 @@ export const userSlice = createSlice({
       })
 
       .addCase(updateUser.pending, (state) => {
-        state.status = STATUSES.LOADING
+        state.status = STATUSES.LOADING;
       })
 
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload.user
-        state.message = action.payload.message
-        state.status = STATUSES.IDLE
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        state.status = STATUSES.IDLE;
       })
 
       .addCase(updateUser.rejected, (state) => {
-        state.status = STATUSES.ERROR
+        state.status = STATUSES.ERROR;
       })
 
       .addCase(updateAvatar.fulfilled, (state, action) => {
-        state.user = action.payload.user
-        state.message = action.payload.message
-        state.status = STATUSES.IDLE
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        state.status = STATUSES.IDLE;
       })
 
       .addCase(updateAvatar.rejected, (state) => {
-        state.status = STATUSES.ERROR
-      })
-      
+        state.status = STATUSES.ERROR;
+      });
   },
 });
 

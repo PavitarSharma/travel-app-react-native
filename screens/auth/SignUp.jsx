@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  ToastAndroid,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Button, MyInputs } from "../../components";
@@ -12,8 +13,11 @@ import { Link } from "@react-navigation/native";
 import { Formik } from "formik";
 import { validationSchema } from "../../utils/validation";
 import http from "../../axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ROUTES } from "../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "../../redux/actions/userAction";
+import { STATUSES, reset, userState } from "../../redux/slices/userSlice";
 
 const userInfo = {
   name: "",
@@ -23,12 +27,15 @@ const userInfo = {
 };
 
 const SignUp = ({ navigation }) => {
-  const [status, setStatus] = useState("");
-  const [message, setMessage] = useState("")
-  const [error, setError] = useState(false)
+  const dispatch = useDispatch();
+  const user = useSelector(userState)
+  const { status, message } = useSelector(userState);
+
+  // useEffect(() => {
+  //   dispatch(reset());
+  // }, [dispatch]);
 
   const handleOnSubmit = async (values, formikActions) => {
-    
     const { name, email, password } = values;
 
     const formData = {
@@ -37,26 +44,34 @@ const SignUp = ({ navigation }) => {
       password,
     };
 
-    try {
-      const { data } = await http.post("/user/signUp", formData);
-      setMessage(data.message)
-      setStatus(data.status)
-      setError(false)
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      setMessage(data.message)
-      setStatus(data.status)
-      setError(true)
+    dispatch(signUp(formData));
+
+    // try {
+    //   const { data } = await http.post("/user/signUp", formData);
+    //   setMessage(data.message)
+    //   setStatus(data.status)
+    //   setError(false)
+    //   console.log(data);
+    // } catch (error) {
+    //   console.log(error);
+    //   setMessage(data.message)
+    //   setStatus(data.status)
+    //   setError(true)
+    // }
+    if (status === STATUSES.IDLE) {
+      ToastAndroid.show("User registered successfully", ToastAndroid.SHORT);
+      // navigation.navigate(ROUTES.SIGNIN);
     }
 
-    formikActions.resetForm();
+    if (status === STATUSES.ERROR) {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    }
+
+    // formikActions.resetForm();
     formikActions.setSubmitting(false);
   };
 
-  if(status === "SUCCESS") {
-    navigation.navigate(ROUTES.SIGNIN)
-  }
+console.log(user);
 
   return (
     <SafeAreaView className="px-4 relative">
