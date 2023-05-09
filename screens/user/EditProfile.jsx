@@ -26,14 +26,15 @@ const userInfo = {
   description: "",
   facebookLink: "",
   twitterLink: "",
+  dob: ""
 };
 
 const EditProfile = ({ navigation, route }) => {
   const { status, user } = useSelector(userState);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState([]);
-  const [date, setDate] = useState("");
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  // const [date, setDate] = useState("");
+  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const [formData, setFormData] = useState(userInfo);
 
@@ -48,8 +49,6 @@ const EditProfile = ({ navigation, route }) => {
         twitterLink: user?.twitterLink,
         address: user?.address,
       });
-
-      setDate(user?.dob);
     }
   }, [user]);
 
@@ -57,13 +56,13 @@ const EditProfile = ({ navigation, route }) => {
     setSelected(selectedItems);
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  // const showDatePicker = () => {
+  //   setDatePickerVisibility(true);
+  // };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  // const hideDatePicker = () => {
+  //   setDatePickerVisibility(false);
+  // };
 
   const handleChange = (value, filedName) => {
     setFormData({
@@ -73,7 +72,7 @@ const EditProfile = ({ navigation, route }) => {
   };
 
   const handleSubmit = async () => {
-    const { name, mobile, address, description, facebookLink, twitterLink } =
+    const { name, mobile, address, dob, description, facebookLink, twitterLink } =
       formData;
 
     const userData = {
@@ -83,7 +82,7 @@ const EditProfile = ({ navigation, route }) => {
       description,
       facebookLink,
       twitterLink,
-      dob: date,
+      dob,
       hobbies: selected,
     };
 
@@ -103,13 +102,13 @@ const EditProfile = ({ navigation, route }) => {
     hideDatePicker();
   };
 
-  if(status === STATUSES.ERROR){
-    alert("Something went wrong")
+  if (status === STATUSES.ERROR) {
+    alert("Something went wrong");
   }
 
   return (
-    <ScrollView>
-      <SafeAreaView className="mt-8 px-4 mb-14">
+    <SafeAreaView className="mt-8 px-4 mb-14">
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Ionicons
             name="arrow-back"
@@ -137,19 +136,24 @@ const EditProfile = ({ navigation, route }) => {
             onChangeText={(value) => handleChange(value, "address")}
           />
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={showDatePicker}
             className="w-full bg-white rounded-md h-[46px] mb-4 justify-center px-4"
           >
             <Text className={`${date ? "opacity-100" : "opacity-50"}`}>
               {date ? date : "DOB"}
             </Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
+          </TouchableOpacity> */}
+          {/* <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
+          /> */}
+          <UserInput
+            placeholder="21 Feb, 1995"
+            value={formData.dob}
+            onChangeText={(value) => handleChange(value, "dob")}
           />
 
           <MultipleSelectList
@@ -189,10 +193,14 @@ const EditProfile = ({ navigation, route }) => {
         />
 
         <View className="mt-3">
-          <Button title="Save" isSubmitting={status === STATUSES.LOADING} onSubmit={handleSubmit} />
+          <Button
+            title="Save"
+            isSubmitting={status === STATUSES.LOADING}
+            onSubmit={handleSubmit}
+          />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

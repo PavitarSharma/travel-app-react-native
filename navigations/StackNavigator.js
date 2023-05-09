@@ -1,14 +1,15 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   EditProfile,
+  Home,
   PostAdventure,
+  Profile,
   SignIn,
   SignUp,
   TravelDetail,
   UserInfo,
 } from "../screens";
 import { ROUTES } from "../constants";
-import BottomTabNavigator from "./BottomTabNavigator";
 import { useSelector } from "react-redux";
 import { userState } from "../redux/slices/userSlice";
 
@@ -37,13 +38,19 @@ const StackNavigator = () => {
 
       <Stack.Screen
         name={ROUTES.HOME}
-        component={BottomTabNavigator}
+        component={Home}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name={ROUTES.TRAVELDETAIL}
         component={TravelDetail}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name={ROUTES.PROFILE}
+        component={Profile}
         options={{ headerShown: false }}
       />
 

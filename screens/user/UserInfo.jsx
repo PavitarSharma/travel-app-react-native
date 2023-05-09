@@ -15,8 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateAvatar } from "../../redux/actions/userAction";
 import { STATUSES, userState } from "../../redux/slices/userSlice";
 
-const hobbies = ["Traveling", "Reading", "Writing", "Swimming"];
-
 const UserInfo = ({ navigation, route }) => {
   const [profileImage, setProfileImage] = useState("");
   const { status } = useSelector(userState);
@@ -44,7 +42,7 @@ const UserInfo = ({ navigation, route }) => {
   const uploadProfileImage = () => {
     const formData = new FormData();
     formData.append("avatar", {
-      name: new Date() + "_profile",
+      name: new Date() + "profile",
       uri: profileImage,
       type: "image/jpg",
     });
@@ -52,7 +50,7 @@ const UserInfo = ({ navigation, route }) => {
     dispatch(updateAvatar({ userId: user?._id, data: formData }));
 
     if (status === STATUSES.IDLE) {
-      setProfileImage("");
+      navigation.goBack();
     }
   };
 
@@ -65,8 +63,8 @@ const UserInfo = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView>
-      <SafeAreaView className="mt-8 px-4">
+    <SafeAreaView className="mt-8 px-4">
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between">
           <Ionicons
             name="arrow-back"
@@ -183,8 +181,8 @@ const UserInfo = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

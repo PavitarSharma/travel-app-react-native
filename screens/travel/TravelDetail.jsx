@@ -20,7 +20,7 @@ const TravelDetail = ({ navigation, route }) => {
   const { travel, status } = useSelector(travelState);
   const dispatch = useDispatch();
   const [booked, setBooked] = useState(false);
-  console.log(travel);
+
 
   const handleBookedTrip = () => {
     setBooked(!booked);
@@ -31,8 +31,8 @@ const TravelDetail = ({ navigation, route }) => {
     }
   };
   return (
-    <ScrollView>
-      <SafeAreaView className="mt-8 px-4 mb-10">
+    <SafeAreaView className="mt-4 px-4 mb-10">
+      <ScrollView showsHorizontalScrollIndicator={false}>
         <View className="flex-row items-center justify-between">
           <Ionicons
             name="arrow-back"
@@ -60,8 +60,8 @@ const TravelDetail = ({ navigation, route }) => {
         >
           <Text className="text-white font-bold">Book Now</Text>
         </TouchableOpacity>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

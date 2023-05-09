@@ -7,13 +7,14 @@ import {
   Image,
   AsyncStorage,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { ROUTES } from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, userState } from "../../redux/slices/userSlice";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getUser } from "../../redux/actions/userAction";
 import { getUserAdventureTrip } from "../../redux/actions/travelAction";
 import { travelState } from "../../redux/slices/travelSlice";
@@ -25,6 +26,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(userState);
   const { travels } = useSelector(travelState);
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -39,9 +41,28 @@ const Profile = () => {
     dispatch(getUserAdventureTrip());
   }, [dispatch]);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    setTimeout(() => {
+      setRefreshing(false);
+      dispatch(getUser(user?._id));
+      dispatch(getUserAdventureTrip());
+    }, 2000);
+  }, [dispatch,user?._id]);
+
   return (
-    <ScrollView>
-      <SafeAreaView className="mt-8 px-4">
+    <SafeAreaView className="mt-4 px-4">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor={"blue"}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         <View className="flex-row items-center justify-between">
           <Ionicons
             name="arrow-back"
@@ -126,15 +147,17 @@ const Profile = () => {
                     source={{ uri: item?.image }}
                     className="h-full w-full object-cover rounded-2xl"
                   />
-                  <Text className="absolute bottom-0 text-md font-bold text-white text-left w-full pr-3 pb-3">{item?.title}</Text>
+                  <Text className="absolute bottom-0 text-md font-bold text-white text-left w-full pr-3 pb-3">
+                    {item?.title}
+                  </Text>
                 </View>
               );
             }}
             keyExtractor={(item) => item?._id}
           />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

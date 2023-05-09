@@ -62,7 +62,7 @@ export const updateUser = createAsyncThunk(
       return await userService.updateUser(userId, data, token);
     } catch (error) {
       console.error(error.response.data.message);
-      console.log(userId);
+      
       (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();

@@ -1,5 +1,3 @@
-import OnboardingItem from "./onboarding/OnboardingItem";
-import Pagination from "./onboarding/Pagination";
 import MyInputs from "./MyInputs";
 import Button from "./Button";
 import Header from "./Header";
@@ -10,8 +8,6 @@ import Error from "./Error";
 import NotFound from "./NotFound";
 
 export {
-  OnboardingItem,
-  Pagination,
   MyInputs,
   Button,
   Header,

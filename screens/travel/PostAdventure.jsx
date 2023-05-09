@@ -61,7 +61,6 @@ const PostAdventure = ({ navigation, route }) => {
       const response = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-      
       });
 
       if (!response.canceled) {
@@ -77,7 +76,6 @@ const PostAdventure = ({ navigation, route }) => {
       name: new Date() + "image",
       uri: image,
       type: "image/jpg",
-      
     });
     travelData.append("title", title);
     travelData.append("description", description);
@@ -88,16 +86,14 @@ const PostAdventure = ({ navigation, route }) => {
 
     dispatch(postTravelAdventure(travelData));
 
-    if(status === STATUSES.IDLE) {
-      navigation.goBack()
-    }    
+    if (status === STATUSES.IDLE) {
+      navigation.goBack();
+    }
   };
 
-
-
   return (
-    <ScrollView>
-      <SafeAreaView className="mt-8 px-4 mb-14">
+    <SafeAreaView className="mt-4 px-4 mb-14">
+      <ScrollView>
         <View>
           <Ionicons
             name="arrow-back"
@@ -177,8 +173,8 @@ const PostAdventure = ({ navigation, route }) => {
         <View className="mt-3">
           <Button title="Save" isSubmitting={false} onSubmit={handleSubmit} />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

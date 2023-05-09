@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  ToastAndroid,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Button, MyInputs } from "../../components";
@@ -25,13 +26,12 @@ const userInfo = {
 
 const SignIn = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { status, message  } = useSelector(userState);
+  const { status, message } = useSelector(userState);
   const [formData, setFormData] = useState(userInfo);
 
-
   useEffect(() => {
-    dispatch(reset())
-  }, [dispatch])
+    dispatch(reset());
+  }, [dispatch]);
 
   const handleChange = (value, fieldName) => {
     setFormData({
@@ -39,22 +39,17 @@ const SignIn = ({ navigation }) => {
       [fieldName]: value,
     });
   };
-  
 
   const handleOnSubmit = () => {
-    dispatch(signIn(formData))
-    if(status === STATUSES.IDLE) {
-      alert(message)
-      navigation.navigate(ROUTES.HOME)
+    dispatch(signIn(formData));
+    if (status === STATUSES.IDLE) {
+      ToastAndroid.show("Logged in successfully", ToastAndroid.SHORT);
+      navigation.navigate(ROUTES.HOME);
     }
-
-  
   };
 
- 
-
-  if(status === STATUSES.ERROR) {
-    alert("Something went wrong")
+  if (status === STATUSES.ERROR) {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
   }
 
   return (

@@ -46,21 +46,9 @@ const SignUp = ({ navigation }) => {
 
     dispatch(signUp(formData));
 
-    // try {
-    //   const { data } = await http.post("/user/signUp", formData);
-    //   setMessage(data.message)
-    //   setStatus(data.status)
-    //   setError(false)
-    //   console.log(data);
-    // } catch (error) {
-    //   console.log(error);
-    //   setMessage(data.message)
-    //   setStatus(data.status)
-    //   setError(true)
-    // }
     if (status === STATUSES.IDLE) {
       ToastAndroid.show("User registered successfully", ToastAndroid.SHORT);
-      // navigation.navigate(ROUTES.SIGNIN);
+      navigation.navigate(ROUTES.SIGNIN);
     }
 
     if (status === STATUSES.ERROR) {
@@ -71,7 +59,6 @@ const SignUp = ({ navigation }) => {
     formikActions.setSubmitting(false);
   };
 
-console.log(user);
 
   return (
     <SafeAreaView className="px-4 relative">

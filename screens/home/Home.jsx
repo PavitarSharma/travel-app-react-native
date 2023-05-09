@@ -6,8 +6,9 @@ import {
   Image,
   SafeAreaView,
   LogBox,
+  RefreshControl,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Error,
   Header,
@@ -26,10 +27,10 @@ import { useNavigation } from "@react-navigation/native";
 import { ROUTES } from "../../constants";
 
 const Home = () => {
-  const { user } = useSelector(userState);
   const navigation = useNavigation();
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const { travels, status } = useSelector(travelState);
   const dispatch = useDispatch();
 
@@ -45,10 +46,29 @@ const Home = () => {
     setCategory(value);
   };
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    setTimeout(() => {
+      setRefreshing(false);
+      setCategory("");
+      dispatch(getAllTravelAdventure({ title: search, category }));
+    }, 2000);
+  }, [dispatch, search, category, setCategory]);
+
   return (
-    <SafeAreaView className="mt-6">
-      <ScrollView>
-        <Header />
+    <SafeAreaView className="mt-2">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor={"blue"}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        <Header onNavigate={() => navigation.navigate(ROUTES.PROFILE)} />
         <View className="mt-4 px-4">
           <Searchbar setSearch={setSearch} search={search} />
         </View>
@@ -92,21 +112,28 @@ const Home = () => {
                 <Error />
               </View>
             ) : travels?.length > 0 ? (
-              travels &&
-              travels?.map((item, index) => {
-                return (
-                  <TravelCard
-                    onPressNavigation={() =>
-                      navigation.navigate(ROUTES.TRAVELDETAIL, { item: item })
-                    }
-                    key={item?._id}
-                    item={item}
-                  />
-                );
-              })
+              travels && (
+                <FlatList
+                  data={travels}
+                  renderItem={({ item }) => {
+                    return (
+                      <TravelCard
+                        onPressNavigation={() =>
+                          navigation.navigate(ROUTES.TRAVELDETAIL, {
+                            item: item,
+                          })
+                        }
+                        key={item?._id}
+                        item={item}
+                      />
+                    );
+                  }}
+                  keyExtractor={(item) => item?._id}
+                />
+              )
             ) : (
               <View className="mt-32">
-                <NotFound />
+                <NotFound title="No trips found" />
               </View>
             )}
           </View>

@@ -13,6 +13,8 @@ export const initialState = {
   travel: {},
   travels: [],
   status: STATUSES.IDLE,
+  favorites: [],
+  favorite: false
 };
 
 export const travelSlice = createSlice({
@@ -22,10 +24,30 @@ export const travelSlice = createSlice({
     favoriteTrip: (state, action) => {
       state.travels = state.travels.filter((travel) =>
         travel?._id === action.payload.id
-          ? { ...travel, favorite: action.payload.favorite }
+          ? { ...travel, favorite: action.payload }
           : travel
       );
     },
+
+    isFavoriteTrip: (state, action) => {
+      return {
+        ...state,
+        favorite: !action.payload
+      }
+    },
+
+    addFavoriteTrip : (state, action) => {
+      state.favorites.push(action.payload)
+    },
+
+
+    removeFavoriteTrip : (state, action) => {
+      state.favorites = state.favorites.filter((favorite) => favorite?._id !== action.payload)
+    },
+
+    reset: (state) => {
+      state.favorites = []
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -63,18 +85,18 @@ export const travelSlice = createSlice({
         state.status = STATUSES.ERROR;
       })
 
-      .addCase(getFavoriteAdventure.pending, (state) => {
-        state.status = STATUSES.LOADING;
-      })
+      // .addCase(getFavoriteAdventure.pending, (state) => {
+      //   state.status = STATUSES.LOADING;
+      // })
 
-      .addCase(getFavoriteAdventure.fulfilled, (state, action) => {
-        state.status = STATUSES.IDLE;
-        state.travels = action.payload.travels;
-      })
+      // .addCase(getFavoriteAdventure.fulfilled, (state, action) => {
+      //   state.status = STATUSES.IDLE;
+      //   state.favorites = action.payload.travels;
+      // })
 
-      .addCase(getFavoriteAdventure.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-      })
+      // .addCase(getFavoriteAdventure.rejected, (state, action) => {
+      //   state.status = STATUSES.ERROR;
+      // })
 
       .addCase(bookedAdventure.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
@@ -99,7 +121,7 @@ export const travelSlice = createSlice({
   },
 });
 
-export const { favoriteTrip } = travelSlice.actions;
+export const { favoriteTrip, isFavoriteTrip, removeFavoriteTrip, addFavoriteTrip, rest } = travelSlice.actions;
 
 export const travelState = (state) => state.travel;
 

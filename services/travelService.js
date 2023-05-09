@@ -37,11 +37,15 @@ const favoriteAdventureTrip = async (id, body, token) => {
     },
   };
 
+
+
   const { data } = await http.patch(
     `/travel/${id}/favorite`,
     { favorite: body },
     config
   );
+
+ 
 
   return data;
 };
@@ -53,7 +57,7 @@ const getFavoriteAdventure = async (token) => {
     },
   };
   const { data } = await http.get("/travel/user/favorite", config);
-
+  
   return data;
 };
 
